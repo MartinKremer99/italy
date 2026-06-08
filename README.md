@@ -43,10 +43,11 @@ Vor jedem Build wird `npm run sync:showcase` ausgeführt (`reise-showcase.html` 
    git init
    git add .
    git commit -m "Initial commit: roadtrip app + showcase"
-   gh repo create italy-roadtrip-2026 --private --source=. --push
+   git remote add origin https://github.com/MartinKremer99/italy.git
+   git push -u origin main
    ```
 
-   (Oder auf github.com ein leeres Repo erstellen und `git remote add origin …` + `git push -u origin main`.)
+   Remote ist bereits gesetzt: **https://github.com/MartinKremer99/italy**
 
 2. **Vercel:** [vercel.com](https://vercel.com) → **Add New Project** → GitHub-Repo importieren.
 

@@ -44,9 +44,16 @@ html = html
   .replace(/href="showcase\//g, 'href="/showcase/');
 fs.writeFileSync(path.join(publicDir, 'reise-showcase.html'), html);
 
-// Assets: showcase/ → public/showcase/
+// Assets: showcase/ → public/showcase/ (images only; keep synced HTML above)
 const pubShowcase = path.join(publicDir, 'showcase');
-rmrf(path.join(pubShowcase, 'showcase')); // accidental nested copy
-copyDir(showcaseDir, pubShowcase);
+rmrf(path.join(pubShowcase, 'showcase'));
+rmrf(path.join(pubShowcase, 'images', 'images'));
+for (const name of ['images', 'route.geojson', 'showcase-app.js', 'showcase-data.js', 'ATTRIBUTION.md']) {
+  const s = path.join(showcaseDir, name);
+  if (!fs.existsSync(s)) continue;
+  const d = path.join(pubShowcase, name);
+  if (fs.statSync(s).isDirectory()) copyDir(s, d);
+  else cp(s, d);
+}
 
 console.log('Synced showcase → public/');
