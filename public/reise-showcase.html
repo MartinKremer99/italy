@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="de" data-img-base="/showcase/images" data-route-url="/showcase/route.geojson">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unsere Italien-Reise 2026</title>
+  <meta name="description" content="27. Juli – 8. August 2026 · Luxemburg → Bari → Italien → zu Hause">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <style>
+    :root {
+      --cream: #faf6f0;
+      --sand: #efe6d8;
+      --terracotta: #c45c3a;
+      --terracotta-deep: #9e4529;
+      --olive: #3d5240;
+      --ink: #1f1a17;
+      --ink-soft: #5a524c;
+      --gold: #c9a227;
+      --radius: 20px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 3.5rem; }
+
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      font-weight: 300;
+      color: var(--ink);
+      background: var(--cream);
+      line-height: 1.6;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .display {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 600;
+      line-height: 1.1;
+    }
+
+    /* —— Hero —— */
+    .hero {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero__bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero__bg img {
+      height: 100%;
+      filter: brightness(0.72) saturate(1.05);
+    }
+
+    .hero__bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(31, 26, 23, 0.35) 0%,
+        rgba(31, 26, 23, 0.15) 40%,
+        rgba(196, 92, 58, 0.45) 100%
+      );
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 1;
+      padding: clamp(2rem, 6vw, 4rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      min-height: 100vh;
+      min-height: 100dvh;
+      color: #fff;
+    }
+
+    .hero__eyebrow {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.9;
+      margin-bottom: 1rem;
+    }
+
+    .hero__title {
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      max-width: 12ch;
+      margin-bottom: 1rem;
+    }
+
+    .hero__subtitle {
+      font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+      max-width: 32rem;
+      opacity: 0.95;
+      font-weight: 300;
+    }
+
+    .hero__stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem 2.5rem;
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .hero__stat strong {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+
+    .hero__stat span {
+      font-size: 0.85rem;
+      opacity: 0.85;
+    }
+
+    .hero__scroll {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      background: var(--cream);
+    }
+
+    /* —— Sections —— */
+    section {
+      padding: clamp(3rem, 8vw, 6rem) clamp(1.25rem, 5vw, 3rem);
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--olive);
+      margin-bottom: 1.25rem;
+    }
+
+    .section-lead {
+      font-size: 1.15rem;
+      color: var(--ink-soft);
+      max-width: 42rem;
+      margin-bottom: 2.5rem;
+    }
+
+    /* —— Story —— */
+    .story {
+      background: var(--sand);
+    }
+
+    .story__grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .story__grid {
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+      }
+    }
+
+    .story__text p {
+      margin-bottom: 1rem;
+      font-size: 1.05rem;
+    }
+
+    .story__text p:last-child { margin-bottom: 0; }
+
+    .story__visual {
+      border-radius: var(--radius);
+      overflow: hidden;
+      aspect-ratio: 4/5;
+      box-shadow: 0 24px 60px rgba(31, 26, 23, 0.12);
+    }
+
+    /* —— Phases —— */
+    .phases {
+      display: grid;
+      gap: 1rem;
+    }
+
+    @media (min-width: 700px) {
+      .phases { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .phase-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      border: 1px solid rgba(31, 26, 23, 0.06);
+      box-shadow: 0 8px 30px rgba(31, 26, 23, 0.05);
+    }
+
+    .phase-card__num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      color: var(--terracotta);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .phase-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      color: var(--olive);
+      margin-bottom: 0.5rem;
+    }
+
+    .phase-card p {
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+    }
+
+    /* —— Wedding highlight —— */
+    .highlight {
+      background: linear-gradient(135deg, var(--olive) 0%, #2a3830 100%);
+      color: #fff;
+    }
+
+    .highlight .section-label { color: var(--gold); }
+
+    .highlight .section-title { color: #fff; }
+
+    .highlight .section-lead { color: rgba(255, 255, 255, 0.85); }
+
+    .highlight__card {
+      display: grid;
+      gap: 0;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+    }
+
+    @media (min-width: 768px) {
+      .highlight__card { grid-template-columns: 1.1fr 1fr; }
+    }
+
+    .highlight__img { min-height: 280px; }
+
+    .highlight__body {
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+      background: rgba(255, 255, 255, 0.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .highlight__date {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .highlight__body h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      margin-bottom: 1rem;
+    }
+
+    .highlight__body p {
+      opacity: 0.9;
+      font-size: 1.05rem;
+    }
+
+    /* —— Timeline —— */
+    .timeline {
+      position: relative;
+      padding-left: 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 1.25rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--terracotta), var(--sand));
+    }
+
+    @media (min-width: 768px) {
+      .timeline::before { left: 50%; transform: translateX(-50%); }
+    }
+
+    .day {
+      position: relative;
+      margin-bottom: 3rem;
+      padding-left: 3.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .day {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        padding-left: 0;
+        margin-bottom: 4rem;
+      }
+      .day:nth-child(even) .day__content { order: 2; }
+      .day:nth-child(even) .day__media { order: 1; }
+      .day::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 2rem;
+        transform: translateX(-50%);
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--terracotta);
+        border: 3px solid var(--cream);
+        box-shadow: 0 0 0 2px var(--terracotta-soft, #d4785a);
+      }
+    }
+
+    .day__dot {
+      position: absolute;
+      left: 0.65rem;
+      top: 1.5rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--terracotta);
+      border: 2px solid var(--cream);
+    }
+
+    @media (min-width: 768px) { .day__dot { display: none; } }
+
+    .day--wedding .day__dot,
+    .day--wedding::after { background: var(--gold); }
+
+    .day__media {
+      border-radius: var(--radius);
+      overflow: hidden;
+      aspect-ratio: 16/11;
+      box-shadow: 0 16px 40px rgba(31, 26, 23, 0.1);
+    }
+
+    .day__content {
+      padding-top: 0.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .day__content {
+        padding-top: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+
+    .day__meta {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 0.35rem;
+    }
+
+    .day--wedding .day__meta { color: var(--gold); }
+
+    .day__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.85rem;
+      color: var(--olive);
+      margin-bottom: 0.35rem;
+    }
+
+    .day__route {
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      margin-bottom: 0.75rem;
+    }
+
+    .day__sleep {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      background: var(--sand);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+      color: var(--terracotta-deep);
+      text-decoration: none;
+    }
+
+    .day__sleep:hover { background: #e8ddd0; }
+
+    .day__activities {
+      list-style: none;
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+    }
+
+    .day__activities li {
+      padding: 0.35rem 0;
+      padding-left: 1.25rem;
+      position: relative;
+    }
+
+    .day__activities li::before {
+      content: '◦';
+      position: absolute;
+      left: 0;
+      color: var(--terracotta);
+    }
+
+    .day__drive {
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      margin-top: 0.5rem;
+      opacity: 0.8;
+    }
+
+    /* —— Places bento —— */
+    .places {
+      background: var(--sand);
+    }
+
+    .bento {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 768px) {
+      .bento {
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: 200px;
+      }
+      .bento__item--large {
+        grid-column: span 2;
+        grid-row: span 2;
+      }
+      .bento__item--wide { grid-column: span 2; }
+    }
+
+    .bento__item {
+      position: relative;
+      border-radius: calc(var(--radius) - 4px);
+      overflow: hidden;
+      min-height: 160px;
+    }
+
+    .bento__item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(31, 26, 23, 0.65) 0%, transparent 55%);
+    }
+
+    .bento__label {
+      position: absolute;
+      left: 1rem;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 1;
+      color: #fff;
+    }
+
+    .bento__label strong {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+    }
+
+    .bento__label span {
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+
+    /* —— Food & stays —— */
+    .gems {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 600px) {
+      .gems { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 960px) {
+      .gems { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .gem {
+      background: #fff;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border-left: 4px solid var(--terracotta);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gem--food { border-left-color: var(--gold); }
+
+    .gem__media {
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+    }
+
+    .gem__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gem__body {
+      padding: 1.25rem 1.5rem 1.5rem;
+    }
+
+    .gem__type {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin: 0 0 0.35rem;
+    }
+
+    .gem--food .gem__type { color: var(--gold); }
+
+    .gem h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      color: var(--olive);
+      margin-bottom: 0.35rem;
+    }
+
+    .gem p {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+    }
+
+    /* —— Practical —— */
+    .practical {
+      background: #fff;
+    }
+
+    .tips {
+      display: grid;
+      gap: 1rem;
+    }
+
+    @media (min-width: 600px) {
+      .tips { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .tip {
+      padding: 1.25rem 1.5rem;
+      background: var(--cream);
+      border-radius: 14px;
+    }
+
+    .tip h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--olive);
+      margin-bottom: 0.35rem;
+    }
+
+    .tip p {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+    }
+
+    /* —— Sticky nav —— */
+    .showcase-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.35rem 1rem;
+      padding: 0.65rem 1rem;
+      background: transparent;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+
+    .showcase-nav--solid {
+      background: rgba(250, 246, 240, 0.92);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 24px rgba(31, 26, 23, 0.08);
+    }
+
+    .showcase-nav a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+    }
+
+    .showcase-nav--solid a { color: var(--olive); }
+    .showcase-nav a:hover { color: var(--terracotta); }
+
+    /* —— Budget strip —— */
+    .budget-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 2rem;
+      justify-content: center;
+      padding: 1.25rem clamp(1.25rem, 5vw, 3rem);
+      background: #fff;
+      border-bottom: 1px solid rgba(31, 26, 23, 0.06);
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+    }
+
+    .budget-strip strong { color: var(--ink); font-weight: 600; }
+    .budget-strip small { opacity: 0.75; }
+
+    /* —— Map —— */
+    .map-section {
+      background: var(--sand);
+      padding: clamp(3rem, 8vw, 5rem) 0;
+    }
+
+    .showcase-map-wrap {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(31, 26, 23, 0.12);
+      background: #e8e0d4;
+    }
+
+    #showcase-map {
+      height: min(52vh, 480px);
+      width: 100%;
+    }
+
+    #showcase-map .leaflet-container { font-family: inherit; }
+
+    .map-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 1.5rem;
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+    }
+
+    .map-legend span::before {
+      content: '';
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 0.4rem;
+      vertical-align: middle;
+    }
+
+    .map-legend__out::before { background: #b85c38; }
+    .map-legend__wed::before { background: #c9a227; }
+    .map-legend__it::before { background: #4a6741; }
+    .map-legend__ret::before { background: #7a6f5a; }
+
+    .showcase-marker-wrap { background: none; border: none; }
+    .showcase-marker {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--c, var(--terracotta));
+      color: #fff;
+      font-size: 0.55rem;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      border: 2px solid #fff;
+    }
+
+    /* —— Hotel choices —— */
+    .choices-intro {
+      max-width: 40rem;
+      margin-bottom: 2rem;
+      color: var(--ink-soft);
+    }
+
+    .hotel-stop {
+      margin-bottom: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(31, 26, 23, 0.08);
+    }
+
+    .hotel-stop:last-child { border-bottom: none; }
+
+    .hotel-stop__head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .hotel-stop__city {
+      font-size: 2rem;
+      color: var(--olive);
+    }
+
+    .hotel-stop__meta { font-size: 0.95rem; color: var(--ink-soft); }
+
+    .hotel-stop__status {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+    }
+
+    .status--done { background: #e8f0e8; color: var(--olive); }
+    .status--open { background: #fff3e8; color: var(--terracotta-deep); }
+    .status--search { background: #e8eef5; color: #3d5a80; }
+    .status--urgent { background: #fde8e4; color: var(--terracotta-deep); }
+
+    .hotel-stop__bookby,
+    .hotel-stop__notes {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      margin-bottom: 1rem;
+    }
+
+    .hotel-stop__options {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 640px) {
+      .hotel-stop__options { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 960px) {
+      .hotel-stop__options { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .hotel-opt {
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(31, 26, 23, 0.08);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hotel-opt--pick {
+      border-color: var(--terracotta);
+      box-shadow: 0 0 0 2px rgba(196, 92, 58, 0.15);
+    }
+
+    .hotel-opt--upgrade { border-left: 4px solid var(--gold); }
+    .hotel-opt--inspiration { border-style: dashed; opacity: 0.95; }
+
+    .hotel-opt__img {
+      aspect-ratio: 16/10;
+      overflow: hidden;
+      background: var(--sand);
+    }
+
+    .hotel-opt__img--placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-soft);
+      font-size: 2rem;
+    }
+
+    .hotel-opt__body { padding: 1rem 1.1rem 1.15rem; flex: 1; display: flex; flex-direction: column; }
+
+    .hotel-opt__role {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+    }
+
+    .hotel-opt--pick .hotel-opt__role { color: var(--terracotta-deep); }
+
+    .hotel-opt__name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--olive);
+      margin: 0.25rem 0;
+    }
+
+    .hotel-opt__score,
+    .hotel-opt__price { font-size: 0.85rem; font-weight: 500; }
+    .hotel-opt__note { font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.25rem; }
+
+    .hotel-opt__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.5rem;
+    }
+
+    .hotel-opt__tags span {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.5rem;
+      background: var(--sand);
+      border-radius: 6px;
+    }
+
+    .hotel-opt__links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: auto;
+      padding-top: 0.75rem;
+    }
+
+    .opt-link {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 0.35rem 0.65rem;
+      border-radius: 8px;
+      border: 1px solid rgba(31, 26, 23, 0.12);
+      color: var(--olive);
+    }
+
+    .opt-link--primary {
+      background: var(--terracotta);
+      border-color: var(--terracotta);
+      color: #fff;
+    }
+
+    .opt-link:hover { opacity: 0.9; }
+
+    /* —— Dining grid —— */
+    .dining-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 600px) { .dining-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .dining-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      border-left: 4px solid var(--gold);
+    }
+
+    .dining-card--critical { border-left-color: var(--terracotta); }
+
+    .dining-card__meta {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-soft);
+    }
+
+    .dining-card__pick {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      color: var(--olive);
+      margin: 0.35rem 0;
+    }
+
+    .dining-card__alt,
+    .dining-card__book { font-size: 0.85rem; color: var(--ink-soft); }
+
+    .dining-card__link {
+      display: inline-block;
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--terracotta);
+    }
+
+    /* —— Route strip —— */
+    .route-strip {
+      padding: 2rem 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .route-strip__inner {
+      display: flex;
+      gap: 0.5rem;
+      padding: 0 clamp(1.25rem, 5vw, 3rem);
+      min-width: max-content;
+    }
+
+    .route-stop {
+      flex-shrink: 0;
+      padding: 0.6rem 1rem;
+      background: #fff;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--olive);
+      border: 1px solid rgba(31, 26, 23, 0.08);
+    }
+
+    .route-stop::after {
+      content: '→';
+      margin-left: 0.5rem;
+      color: var(--terracotta);
+      opacity: 0.6;
+    }
+
+    .route-stop:last-child::after { content: none; }
+
+    /* —— Footer —— */
+    .finale {
+      text-align: center;
+      padding: clamp(4rem, 12vw, 8rem) 1.5rem;
+      background: linear-gradient(180deg, var(--cream) 0%, var(--sand) 100%);
+    }
+
+    .finale__heart {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .finale h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      color: var(--olive);
+      max-width: 20ch;
+      margin: 0 auto 1rem;
+    }
+
+    .finale p {
+      font-size: 1.1rem;
+      color: var(--ink-soft);
+      max-width: 36rem;
+      margin: 0 auto;
+    }
+
+    .finale__dates {
+      margin-top: 2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      color: var(--terracotta);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="showcase-nav" aria-label="Seitenabschnitte">
+    <a href="#karte">Karte</a>
+    <a href="#route">Route</a>
+    <a href="#hotels">Hotels wählen</a>
+    <a href="#essen">Restaurants</a>
+    <a href="#orte">Orte</a>
+  </nav>
+
+  <header class="hero">
+    <div class="hero__bg">
+      <img
+        src="/showcase/images/hero.jpg"
+        alt="Polignano a Mare an der Adriaküste"
+        width="1920"
+        height="1280"
+      >
+    </div>
+    <div class="hero__content">
+      <p class="hero__eyebrow">27. Juli – 8. August 2026</p>
+      <h1 class="hero__title display">Unsere Italien-Reise</h1>
+      <p class="hero__subtitle">
+        Zwei Wochen, ein Auto, tausend Kilometer — erst zur Hochzeit nach Bari,
+        dann durchs Herz Italiens bis zum Lago Maggiore und zurück nach Luxemburg.
+      </p>
+      <div class="hero__stats">
+        <div class="hero__stat">
+          <strong>13 Tage</strong>
+          <span>Unterwegs</span>
+        </div>
+        <div class="hero__stat">
+          <strong>~4.155 km</strong>
+          <span>Fahrt gesamt</span>
+        </div>
+        <div class="hero__stat">
+          <strong>8 Stopps</strong>
+          <span>von Alpen bis See</span>
+        </div>
+        <div class="hero__stat">
+          <strong>2</strong>
+          <span>auf dem Weg</span>
+        </div>
+      </div>
+    </div>
+    <p class="hero__scroll">Scroll für die Reise ↓</p>
+  </header>
+
+  <div class="budget-strip" id="budget-strip" aria-label="Budget-Übersicht"></div>
+
+  <div class="route-strip" id="route-strip">
+    <div class="route-strip__inner">
+      <span class="route-stop">Luxemburg</span>
+      <span class="route-stop">Innsbruck</span>
+      <span class="route-stop">Pesaro</span>
+      <span class="route-stop">Bari</span>
+      <span class="route-stop">Matera</span>
+      <span class="route-stop">Rom</span>
+      <span class="route-stop">Siena</span>
+      <span class="route-stop">Bologna</span>
+      <span class="route-stop">Stresa</span>
+      <span class="route-stop">Luxemburg</span>
+    </div>
+  </div>
+
+  <section class="map-section" id="karte">
+    <div class="wrap">
+      <p class="section-label">Überblick</p>
+      <h2 class="section-title display">Die Karte</h2>
+      <p class="section-lead">
+        Unser Bogen durch Europa — Klick auf einen Stopp in der Leiste oben zoomt die Karte.
+        Pin antippen für Details.
+      </p>
+      <div class="showcase-map-wrap">
+        <div id="showcase-map" role="application" aria-label="Interaktive Reiseroute"></div>
+      </div>
+      <p class="map-legend">
+        <span class="map-legend__out">Hinweg</span>
+        <span class="map-legend__wed">Hochzeit</span>
+        <span class="map-legend__it">Italien</span>
+        <span class="map-legend__ret">Rückweg</span>
+      </p>
+    </div>
+  </section>
+
+  <section class="story">
+    <div class="wrap">
+      <p class="section-label">Die Idee</p>
+      <h2 class="section-title display">Mehr als nur Anfahrt</h2>
+      <div class="story__grid">
+        <div class="story__text">
+          <p>
+            Wir fahren nicht einfach zu einer Hochzeit und zurück. Die Route ist bewusst ein
+            <strong>Bogen durch Italien</strong>: Alpen, Adriatik, Sassi, Ewige Stadt, Toskana,
+            Emilia-Romagna und zum Schluss der Lago Maggiore — bevor der Simplon uns nach Hause bringt.
+          </p>
+          <p>
+            Drei Akte: <strong>Hinweg &amp; Feier</strong> (Luxemburg → Bari), <strong>Italien entdecken</strong>
+            (Matera bis Bologna), <strong>Entspannen &amp; Heimfahrt</strong> (Stresa → Luxemburg).
+          </p>
+        </div>
+        <div class="story__visual">
+          <img
+            src="/showcase/images/story.jpg"
+            alt="Zypressen in der Val d'Orcia, Toskana"
+            width="900"
+            height="1125"
+            loading="lazy"
+          >
+        </div>
+      </div>
+
+      <div class="phases" style="margin-top: 3rem;">
+        <article class="phase-card">
+          <div class="phase-card__num">01</div>
+          <h3>Hinweg &amp; Hochzeit</h3>
+          <p>27.–30. Juli · Durch die Alpen ans Adriatische Meer — zwei Nächte unterwegs, dann Bari und die Hochzeit.</p>
+        </article>
+        <article class="phase-card">
+          <div class="phase-card__num">02</div>
+          <h3>Italien</h3>
+          <p>31. Juli – 6. Aug. · Matera, Rom, Toskana, Bologna — Kultur, Essen und golden hour in den Sassi.</p>
+        </article>
+        <article class="phase-card">
+          <div class="phase-card__num">03</div>
+          <h3>See &amp; Heimweg</h3>
+          <p>6.–8. Aug. · Stresa am Lago Maggiore, Borromäische Inseln, dann früh über den Simplon zurück.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="highlight">
+    <div class="wrap">
+      <p class="section-label">Der Anlass</p>
+      <h2 class="section-title display">Hochzeit in Bari</h2>
+      <p class="section-lead">
+        Der emotionale Mittelpunkt der ersten Tage — danach bleiben wir noch in Apulien und lassen die Reise langsam weiterziehen.
+      </p>
+      <article class="highlight__card">
+        <div class="highlight__img">
+          <img
+            src="/showcase/images/hotels/hotel-bari-trulli.jpg"
+            alt="Le Alcove — Trulli in Alberobello nahe Bari"
+            width="1200"
+            height="800"
+            loading="lazy"
+          >
+        </div>
+        <div class="highlight__body">
+          <p class="highlight__date">30. Juli 2026 · Donnerstag</p>
+          <h3 class="display">Tag der Hochzeit</h3>
+          <p>
+            Kein Fahrstress — wir sind vor Ort, feiern mit Freunden und Familie, schlafen in den
+            gebuchten Trulli-Unterkünften. Der perfekte Start, bevor Matera und der Rest Italiens auf uns warten.
+          </p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="route">
+    <div class="wrap">
+      <p class="section-label">Tag für Tag</p>
+      <h2 class="section-title display">Die Reiseroute</h2>
+      <p class="section-lead">
+        Jeder Tag mit Fahrt, Übernachtung und dem, was wir uns vorgenommen haben — ohne Stress, mit Platz für Spontanes.
+      </p>
+
+      <div class="timeline">
+
+        <article class="day" data-hotel-stop="innsbruck">
+          <span class="day__dot" aria-hidden="true"></span>
+          <div class="day__media">
+            <img src="/showcase/images/hotels/hotel-innsbruck.jpg" alt="Hotel Penz West, Innsbruck" loading="lazy">
+          </div>
+          <div class="day__content">
+            <p class="day__meta">27. Juli · Montag</p>
+            <h3 class="day__title">Innsbruck</h3>
+            <p class="day__route">Luxemburg → Innsbruck</p>
+            <a class="day__sleep" href="#hotel-innsbruck">Hotel Penz West · Optionen</a>
+            <ul class="day__activities">
+              <li>Abendspaziergang Altstadt · Goldenes Dachl</li>
+              <li>Tyroler Abendessen</li>
+            </ul>
+            <p class="day__drive">~720 km · ca. 7 h</p>
+          </div>
+        </article>
+
+        <article class="day" data-hotel-stop="pesaro">
+          <span class="day__dot" aria-hidden="true"></span>
+          <div class="day__media">
+            <img src="/showcase/images/hotels/hotel-pesaro.jpg" alt="Hotel Excelsior, Pesaro" loading="lazy">
+          </div>
+          <div class="day__content">
+            <p class="day__meta">28. Juli · Dienstag</p>
+            <h3 class="day__title">Pesaro</h3>
+            <p class="day__route">Innsbruck → Brenner → Pesaro</p>
+            <a class="day__sleep" href="#hotel-pesaro">Lungomare · Hotels vergleichen</a>
+            <ul class="day__activities">
+              <li>Sonnenuntergang am Lungomare</li>
+              <li>Fisch-Abendessen am Strand</li>
+            </ul>
+            <p class="day__drive">~700 km · ca. 7 h</p>
+          </div>
+        </article>
+
+        <article class="day" data-hotel-stop="bari">
+          <span class="day__dot" aria-hidden="true"></span>
+          <div class="day__media">
+            <img src="/showcase/images/hotels/hotel-bari-trulli.jpg" alt="Trulli in Alberobello, Apulien" loading="lazy">
+          </div>
+          <div class="day__content">
+            <p class="day__meta">29. Juli · Mittwoch</p>
+            <h3 class="day__title">Ankunft Bari</h3>
+            <p class="day__route">Pesaro → Bari</p>
+            <a class="day__sleep" href="#hotel-bari">Trulli · gebucht + Inspiration</a>
+            <ul class="day__activities">
+              <li>Ankunft am Nachmittag, einchecken</li>
+            </ul>
+            <p class="day__drive">~530 km · ca. 5,5 h</p>
+          </div>
+        </article>
+
+        <article class="day day--wedding">
+          <span class="day__dot" aria-hidden="true"></span>
+          <div class="day__media">
+            <img src="/showcase/images/wedding.jpg" alt="Trulli in Apulien — Hochzeitsregion" loading="lazy">
+          </div>
+          <div class="day__content">
+            <p class="day__meta">30. Juli · Donnerstag</p>
+            <h3 class="day__title">Hochzeit</h3>
+            <p class="day__route">Bari — kein Fahrstress</p>
+            <a class="day__sleep" href="#hotel-bari">Bari (gebucht)</a>
+            <ul class="day__activities">
+              <li>Hochzeit feiern</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="day" data-hotel-stop="matera">
+          <span class="day__dot" aria-hidden="true"></span>
+          <div class="day__media">
+            <img src="/showcase/images/hotels/hotel-matera.jpg" alt="Aquatio Cave, Matera" loading="lazy">
+          </div>
+          <div class="day__content">
+            <p class="day__meta">31. Juli · Freitag</p>
+            <h3 class="day__title">Matera</h3>
+            <p class="day__route">Bari → Matera</p>
+            <a class="day__sleep" href="#hotel-matera">Aquatio · Alternativen</a>
+            <ul class="day__activities">
+              <li>Sassi bei golden hour</li>
+              <li>Geführter Walk Sasso Caveoso</li>
+              <li>Abendessen Vitantonio Lombardo oder Baccanti</li>
+            </ul>
+            <p class="day__drive">~65 km · ca. 1 h</p>
+          </div>
+        </article>
+
+        <article class="day" data-hotel-stop="rome">
+          <span class="day__dot" aria-hidden="true"></span>
+          <div class="day__media">
+            <img src="/showcase/images/hotels/hotel-rome.jpg" alt="Colonna Inn, Rom" loading="lazy">
+          </div>
+          <div class="day__content">
+            <p class="day__meta">1.–2. Aug. · Wochenende</p>
+            <h3 class="day__title">Rom</h3>
+            <p class="day__route">Matera → Rom · dann Stadt</p>
+            <a class="day__sleep" href="#hotel-rome">Colonna Inn · Optionen</a>
+            <ul class="day__activities">
+              <li>Aperitivo Trastevere / Piazza Navona</li>
+              <li>Vatikan &amp; Sixtinische Kapelle (Früheintritt)</li>
+              <li>Borghese-Galerie</li>
+            </ul>
+            <p class="day__drive">~470 km · ca. 5 h (Tag 6)</p>
+          </div>
+        </article>
+
+        <article class="day" data-hotel-stop="siena">
+          <span class="day__dot" aria-hidden="true"></span>
+          <div class="day__media">
+            <img src="/showcase/images/hotels/hotel-siena.jpg" alt="Hotel Palazzo di Valli, Siena" loading="lazy">
+          </div>
+          <div class="day__content">
+            <p class="day__meta">3.–4. Aug.</p>
+            <h3 class="day__title">Siena &amp; Val d'Orcia</h3>
+            <p class="day__route">Rom → Siena · Ausflüge</p>
+            <a class="day__sleep" href="#hotel-siena">Palazzo di Valli · Optionen</a>
+            <ul class="day__activities">
+              <li>Piazza del Campo · Duomo</li>
+              <li>Osteria Le Logge</li>
+              <li>Pienza, Montalcino, Brunello-Verkostung</li>
+              <li>Bagno Vignoni</li>
+            </ul>
+            <p class="day__drive">~230 km · ca. 2,5 h (Anreise)</p>
+          </div>
+        </article>
+
+        <article class="day" data-hotel-stop="bologna">
+          <span class="day__dot" aria-hidden="true"></span>
+          <div class="day__media">
+            <img src="/showcase/images/hotels/hotel-bologna.jpg" alt="Hotel Roma, Bologna" loading="lazy">
+          </div>
+          <div class="day__content">
+            <p class="day__meta">5. Aug. · Mittwoch</p>
+            <h3 class="day__title">Modena &amp; Bologna</h3>
+            <p class="day__route">Siena → Modena → Bologna</p>
+            <a class="day__sleep" href="#hotel-bologna">Hotel Roma · Optionen</a>
+            <ul class="day__activities">
+              <li>Mittagessen Modena (Franceschetta 58)</li>
+              <li>Portici, Piazza Maggiore, Zwei Türme</li>
+              <li>Trattoria di Via Serra</li>
+            </ul>
+            <p class="day__drive">~260 km · ca. 3 h</p>
+          </div>
+        </article>
+
+        <article class="day" data-hotel-stop="stresa">
+          <span class="day__dot" aria-hidden="true"></span>
+          <div class="day__media">
+            <img src="/showcase/images/hotels/hotel-stresa.jpg" alt="Hotel Regina Palace, Stresa" loading="lazy">
+          </div>
+          <div class="day__content">
+            <p class="day__meta">6.–7. Aug.</p>
+            <h3 class="day__title">Stresa</h3>
+            <p class="day__route">Bologna → Stresa · dann See</p>
+            <a class="day__sleep" href="#hotel-stresa">Regina Palace · Optionen</a>
+            <ul class="day__activities">
+              <li>See, Spa, Villa Crespi oder Piccolo Lago</li>
+              <li>Borromäische Inseln (Fähre oder Boot)</li>
+              <li>Optional: Seilbahn Monte Mottarone</li>
+            </ul>
+            <p class="day__drive">~330 km · ca. 3,5 h (Anreise)</p>
+          </div>
+        </article>
+
+        <article class="day">
+          <span class="day__dot" aria-hidden="true"></span>
+          <div class="day__media">
+            <img src="/showcase/images/drive.jpg" alt="Simplonpass — Heimfahrt durch die Alpen" loading="lazy">
+          </div>
+          <div class="day__content">
+            <p class="day__meta">8. Aug. · Samstag</p>
+            <h3 class="day__title">Heimfahrt</h3>
+            <p class="day__route">Stresa → Simplon → Luxemburg</p>
+            <span class="day__sleep">Zuhause</span>
+            <ul class="day__activities">
+              <li>Früh los (~7:00) — Gotthard meiden</li>
+            </ul>
+            <p class="day__drive">~720 km · ca. 7,5 h</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="places" id="orte">
+    <div class="wrap">
+      <p class="section-label">Orte</p>
+      <h2 class="section-title display">Wo wir hinwollen</h2>
+      <div class="bento">
+        <div class="bento__item bento__item--large">
+          <img src="/showcase/images/matera.jpg" alt="Matera">
+          <div class="bento__label"><strong>Matera</strong><span>Die Sassi bei Sonnenuntergang</span></div>
+        </div>
+        <div class="bento__item">
+          <img src="/showcase/images/rome.jpg" alt="Rom">
+          <div class="bento__label"><strong>Rom</strong><span>Vatikan &amp; Trastevere</span></div>
+        </div>
+        <div class="bento__item">
+          <img src="/showcase/images/tuscany.jpg" alt="Val d'Orcia, Toskana">
+          <div class="bento__label"><strong>Val d'Orcia</strong><span>Wein &amp; Zypressen</span></div>
+        </div>
+        <div class="bento__item bento__item--wide">
+          <img src="/showcase/images/stresa.jpg" alt="Lago Maggiore">
+          <div class="bento__label"><strong>Stresa</strong><span>Lago Maggiore &amp; Borromäische Inseln</span></div>
+        </div>
+        <div class="bento__item">
+          <img src="/showcase/images/hotels/hotel-bari-trulli.jpg" alt="Trulli, Apulien">
+          <div class="bento__label"><strong>Apulien</strong><span>Trulli &amp; Hochzeit</span></div>
+        </div>
+        <div class="bento__item">
+          <img src="/showcase/images/innsbruck.jpg" alt="Innsbruck, Alpen">
+          <div class="bento__label"><strong>Innsbruck</strong><span>Hin- &amp; Rückweg über die Alpen</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="hotels">
+    <div class="wrap">
+      <p class="section-label">Gemeinsam entscheiden</p>
+      <h2 class="section-title display">Wo schlafen wir?</h2>
+      <p class="choices-intro section-lead">
+        Pro Stopp unsere <strong>Favoriten</strong>, <strong>Alternativen</strong> und wo sinnvoll ein
+        <strong>Upgrade</strong> — mit Preis, Bewertung und Links zu Booking &amp; Karte.
+        Markiert ist, was schon gebucht ist oder noch offen ist.
+      </p>
+      <div id="hotel-choices"></div>
+    </div>
+  </section>
+
+  <section id="essen" class="practical">
+    <div class="wrap">
+      <p class="section-label">Genuss</p>
+      <h2 class="section-title display">Restaurants &amp; Reservierungen</h2>
+      <p class="section-lead">Die Tische, die wir uns vormerken wollen — mit Alternativen.</p>
+      <div class="dining-grid" id="dining-choices"></div>
+    </div>
+  </section>
+
+  <section class="practical">
+    <div class="wrap">
+      <p class="section-label">Gut zu wissen</p>
+      <h2 class="section-title display">Praktisch &amp; entspannt</h2>
+      <div class="tips">
+        <article class="tip">
+          <h4>Maut &amp; Vignetten</h4>
+          <p>Brenner, Schweiz (Simplon), ggf. österreichische Vignette — grob €110–150 für die Tour.</p>
+        </article>
+        <article class="tip">
+          <h4>ZTL in Städten</h4>
+          <p>Rom und Bologna: Kennzeichen beim Hotel für die ZTL registrieren lassen (E-Mails vorbereitet).</p>
+        </article>
+        <article class="tip">
+          <h4>Matera</h4>
+          <p>Altstadt oft nur zu Fuß — Parkplatz am Hotel. Geführte Sassi-Tour am besten bei golden hour.</p>
+        </article>
+        <article class="tip">
+          <h4>Heimfahrt 8. Aug.</h4>
+          <p>Früh starten (~7:00), Gotthard meiden, über den Simplon — langer aber schöner letzter Tag.</p>
+        </article>
+        <article class="tip">
+          <h4>Wetter</h4>
+          <p>August in Rom kann heiß sein — Früheintritt Vatikan lohnt sich. Am See etwas milder.</p>
+        </article>
+        <article class="tip">
+          <h4>Budget grob</h4>
+          <p>Hotels ~€1.900, Restaurants €300–500, Maut &amp; Tank ~€300–430 — alles planbar im Voraus.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <footer class="finale">
+    <p class="finale__heart" aria-hidden="true">♥</p>
+    <h2 class="display">Ich freu mich auf jeden Kilometer mit dir.</h2>
+    <p>
+      Das ist unser Plan — nicht in Stein gemeißelt, aber mit Liebe zum Detail.
+      Hochzeit, Pasta, Sassi, Wein und ein See zum Abschluss.
+    </p>
+    <p class="finale__dates">27.07. – 08.08.2026</p>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="/showcase/showcase-data.js"></script>
+  <script src="/showcase/showcase-app.js"></script>
+</body>
+</html>

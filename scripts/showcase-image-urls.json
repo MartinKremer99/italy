@@ -1,0 +1,26 @@
+{
+  "places": {
+    "hero.jpg": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/70044_Polignano_A_Mare_BA%2C_Italy_-_panoramio_%284%29.jpg/1280px-70044_Polignano_A_Mare_BA%2C_Italy_-_panoramio_%284%29.jpg",
+    "story.jpg": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/I_cipressi_della_Val_D%27Orcia.jpg/1280px-I_cipressi_della_Val_D%27Orcia.jpg",
+    "innsbruck.jpg": "https://en.wikipedia.org/wiki/Special:FilePath/Goldenes_Dachl.jpg?width=1280",
+    "pesaro.jpg": "https://upload.wikimedia.org/wikipedia/commons/5/5e/Pesaro_panorama.jpg",
+    "bari.jpg": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Bari_-_Lungomare_Imperatore_Augusto_%26_Mare.jpg/1280px-Bari_-_Lungomare_Imperatore_Augusto_%26_Mare.jpg",
+    "wedding.jpg": "https://en.wikipedia.org/wiki/Special:FilePath/Trulli.jpg?width=1280",
+    "matera.jpg": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Sassi_von_Matera_%283%29.jpg/1280px-Sassi_von_Matera_%283%29.jpg",
+    "rome.jpg": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Colosseo_2020.jpg/1280px-Colosseo_2020.jpg",
+    "siena.jpg": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Siena_Cattedrale_nuova_Vista_su_la_Piazza_del_Campo_2.jpg/1280px-Siena_Cattedrale_nuova_Vista_su_la_Piazza_del_Campo_2.jpg",
+    "tuscany.jpg": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/I_cipressi_della_Val_D%27Orcia.jpg/1280px-I_cipressi_della_Val_D%27Orcia.jpg",
+    "bologna.jpg": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Torri_di_Bologna%2C_Bologna.jpg/1280px-Torri_di_Bologna%2C_Bologna.jpg",
+    "stresa.jpg": "https://upload.wikimedia.org/wikipedia/commons/0/04/Stresa_Levo.jpg",
+    "drive.jpg": "https://en.wikipedia.org/wiki/Special:FilePath/Simplon_Pass.jpg?width=1280"
+  },
+  "hotels": {
+    "hotel-innsbruck.jpg": "https://en.wikipedia.org/wiki/Special:FilePath/Goldenes_Dachl.jpg?width=1280",
+    "hotel-pesaro.jpg": "https://upload.wikimedia.org/wikipedia/commons/5/5e/Pesaro_panorama.jpg",
+    "hotel-matera.jpg": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Matera_abitazioni_primitive.jpg/1280px-Matera_abitazioni_primitive.jpg",
+    "hotel-rome.jpg": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Colosseo_2020.jpg/1280px-Colosseo_2020.jpg",
+    "hotel-siena.jpg": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Siena_Cattedrale_nuova_Vista_su_la_Piazza_del_Campo_2.jpg/1280px-Siena_Cattedrale_nuova_Vista_su_la_Piazza_del_Campo_2.jpg",
+    "hotel-bologna.jpg": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Torri_di_Bologna%2C_Bologna.jpg/1280px-Torri_di_Bologna%2C_Bologna.jpg",
+    "hotel-stresa.jpg": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Stresa_Grand_H%C3%B4tel_sul_Lago_Maggiore.jpg/1280px-Stresa_Grand_H%C3%B4tel_sul_Lago_Maggiore.jpg"
+  }
+}

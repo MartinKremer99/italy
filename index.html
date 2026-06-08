@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Italien-Roadtrip 2026 · Dein Buchungsplan</title>
+  <meta name="description" content="Geführter Buchungsplan: Luxemburg → Bari → Italien → Luxemburg, 27.07.–08.08.2026">
+  <meta name="theme-color" content="#b85c38">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23b85c38'/%3E%3Cpath fill='%23fff' d='M8 22 L16 8 L24 22 Z'/%3E%3C/svg%3E">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="mode-planen planen-jetzt">
+  <a href="#main" class="skip-link">Zum Inhalt</a>
+
+  <div id="offline-banner" class="offline-banner" role="status" hidden>
+    <span>Offline — gespeicherte Daten nutzbar; Karte &amp; Wetter brauchen Netz.</span>
+  </div>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <div class="site-header__brand">
+        <p class="site-header__eyebrow" id="header-eyebrow">Dein Buchungsplan</p>
+        <h1 class="site-header__title">Italien-Roadtrip 2026</h1>
+        <p class="site-header__meta" id="header-meta">27.07. – 08.08.2026 · Luxemburg · 2 Erwachsene</p>
+        <p class="flow-progress flow-progress--header" id="flow-progress" hidden></p>
+      </div>
+      <div class="site-header__actions">
+        <a href="/reise-showcase.html" class="btn btn--ghost btn--small" title="Präsentation für unterwegs">Reise-Story</a>
+        <button type="button" class="btn btn--ghost btn--small" id="btn-ics" title="Buchungsfristen als .ics">Kalender</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-nav">
+    <nav class="mode-nav mode-nav--compact" aria-label="Hauptmodus">
+      <div class="mode-nav__inner">
+        <button type="button" class="mode-nav__btn is-active" data-mode="planen" aria-selected="true">Planen</button>
+        <button type="button" class="mode-nav__btn" data-mode="reise">Reise</button>
+      </div>
+    </nav>
+    <nav class="tab-nav tab-nav--planen" id="planen-subnav" aria-label="Planen">
+      <div class="tab-nav__inner">
+        <button type="button" class="tab-nav__btn is-active" data-plan-tab="jetzt" aria-selected="true">Jetzt</button>
+        <button type="button" class="tab-nav__btn" data-plan-tab="details">Details</button>
+      </div>
+    </nav>
+  </div>
+
+  <main id="main" class="main">
+    <div id="mode-planen" class="mode-panel is-active">
+      <section id="panel-jetzt" class="panel is-active">
+        <div id="flow-hero"></div>
+        <div id="flow-phases"></div>
+      </section>
+
+      <section id="panel-details" class="panel" hidden>
+        <p class="panel-lead">Alles auf einen Blick — normalerweise reicht <strong>Jetzt</strong>. Hier findest du Budget, Termine und die volle Liste.</p>
+
+        <article class="card">
+          <header class="card__header">
+            <h2 class="card__title">Wichtige Termine</h2>
+          </header>
+          <ul class="milestones-list" id="milestones-list"></ul>
+        </article>
+
+        <article class="card">
+          <header class="card__header">
+            <h2 class="card__title">Gesamtkosten</h2>
+          </header>
+          <div id="budget-panel"></div>
+        </article>
+
+        <article class="card">
+          <header class="card__header">
+            <h2 class="card__title">Einstellungen &amp; Daten</h2>
+          </header>
+          <div id="settings-panel"></div>
+        </article>
+
+        <div class="panel-toolbar bookings-toolbar">
+          <div class="bookings-toolbar__row">
+            <input type="search" class="search-input" id="bookings-search" placeholder="Suchen…" aria-label="Buchungen durchsuchen">
+            <label class="bookings-toolbar__filter">
+              <span class="visually-hidden">Filter</span>
+              <select id="bookings-filter-select" class="filter-select" aria-label="Buchungsfilter">
+                <option value="open">Offen</option>
+                <option value="all">Alle</option>
+                <option value="urgent">Dringend</option>
+                <option value="overdue">Überfällig</option>
+                <option value="noconf">Ohne Conf.#</option>
+              </select>
+            </label>
+            <div class="view-toggle">
+              <button type="button" class="btn btn--ghost btn--small" id="view-toggle-compact">Kompakt</button>
+              <button type="button" class="btn btn--ghost btn--small is-active" id="view-toggle-full">Details</button>
+            </div>
+          </div>
+          <div class="filter-bar filter-bar--chips" id="bookings-type-filters">
+            <button type="button" class="filter-btn is-active" data-type="all">Alle</button>
+            <button type="button" class="filter-btn" data-type="hotel">Hotels</button>
+            <button type="button" class="filter-btn" data-type="restaurant">Restaurants</button>
+            <button type="button" class="filter-btn" data-type="sight">Tickets</button>
+          </div>
+        </div>
+        <div id="bookings-list"></div>
+      </section>
+    </div>
+
+    <section id="mode-reise" class="mode-panel" hidden>
+      <div class="reise-status" id="reise-trip-status"></div>
+
+      <div class="reise-day-nav" id="reise-day-nav">
+        <button type="button" class="reise-day-nav__btn" id="btn-day-prev" aria-label="Vorheriger Tag">‹</button>
+        <div class="reise-day-nav__center">
+          <span class="reise-day-nav__label" id="reise-day-nav-label">Tag 1</span>
+          <span class="reise-day-nav__meta" id="reise-day-nav-meta"></span>
+        </div>
+        <button type="button" class="reise-day-nav__btn" id="btn-day-next" aria-label="Nächster Tag">›</button>
+      </div>
+
+      <div class="reise-layout">
+        <div class="reise-layout__main">
+          <div class="trip-map-shell">
+            <div id="trip-map" class="trip-map" role="application" aria-label="Interaktive Reiseroute"></div>
+            <ul class="trip-map-legend" id="trip-map-legend" aria-label="Routenabschnitte">
+              <li><span class="trip-map-legend__swatch trip-map-legend__swatch--outbound"></span> Hinweg</li>
+              <li><span class="trip-map-legend__swatch trip-map-legend__swatch--italy"></span> Italien</li>
+              <li><span class="trip-map-legend__swatch trip-map-legend__swatch--return"></span> Rückweg</li>
+              <li class="trip-map-legend__pins"><span class="trip-map-legend__pin trip-map-legend__pin--hotel"></span> Hotel · <span class="trip-map-legend__pin trip-map-legend__pin--rest"></span> Restaurant · <span class="trip-map-legend__pin trip-map-legend__pin--sight"></span> Ticket</li>
+            </ul>
+          </div>
+          <div id="trip-day-cockpit" class="trip-day-cockpit" aria-live="polite"></div>
+        </div>
+
+        <aside class="reise-layout__sidebar">
+          <div class="reise-sidebar__toolbar">
+            <h2 class="day-strip__title">Tage</h2>
+            <div class="filter-bar reise-day-filter" id="reise-day-filter">
+              <button type="button" class="filter-btn is-active" data-reise-filter="all">Alle</button>
+              <button type="button" class="filter-btn" data-reise-filter="heute" id="btn-reise-heute" title="Nur am Reisetag">Heute</button>
+            </div>
+            <button type="button" class="btn btn--ghost btn--small" id="btn-share-trip" title="Link kopieren">Link teilen</button>
+            <button type="button" class="btn btn--ghost btn--small" id="btn-print-trip" title="Tagesblätter drucken">Drucken</button>
+          </div>
+          <div class="day-strip trip-days" id="trip-day-strip"></div>
+        </aside>
+      </div>
+
+      <details class="reise-accordion" id="trip-ontheroad">
+        <summary class="reise-accordion__summary">Unterwegs: Checklisten &amp; ZTL</summary>
+        <div class="ontheroad-layout">
+          <div class="driver-checklists" id="driver-sections"></div>
+          <aside class="card card--ztl">
+            <header class="card__header">
+              <h2 class="card__title">ZTL-E-Mails</h2>
+              <p class="card__subtitle">Kennzeichen unter Planen → Details → Einstellungen</p>
+            </header>
+            <div id="ztl-templates"></div>
+          </aside>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Daten lokal im Browser · <span id="last-saved">—</span></p>
+  </footer>
+
+  <a href="#flow-hero" class="mobile-fab" id="mobile-next-fab" hidden>Nächster Schritt</a>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <input type="file" id="btn-import" accept="application/json,.json" hidden>
+
+  <script type="module" src="/main.js"></script>
+</body>
+</html>

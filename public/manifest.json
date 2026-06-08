@@ -1,0 +1,11 @@
+{
+  "name": "Italien-Roadtrip 2026",
+  "short_name": "Italien 2026",
+  "description": "Buchungsplan und interaktive Reiseroute",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f7f2ea",
+  "theme_color": "#b85c38",
+  "lang": "de",
+  "orientation": "any"
+}
